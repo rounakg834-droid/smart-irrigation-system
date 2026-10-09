@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f8f3">
+  <meta name="description" content="A browser-based smart irrigation system simulation dashboard.">
+  <title>Smart Irrigation | FieldSense</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#dashboard" aria-label="FieldSense home">
+        <span class="brand-mark" aria-hidden="true">✳</span>
+        <span class="brand-copy"><strong>FieldSense</strong><small>SMART AGRICULTURE</small></span>
+      </a>
+
+      <div class="nav-label">WORKSPACE</div>
+      <nav class="side-nav" aria-label="Main navigation">
+        <a class="nav-link active" href="#dashboard"><span class="nav-icon">▦</span>Dashboard</a>
+        <a class="nav-link" href="#monitoring"><span class="nav-icon">◉</span>Live Monitoring</a>
+        <a class="nav-link" href="#control"><span class="nav-icon">◌</span>Irrigation Control</a>
+        <a class="nav-link" href="#weather"><span class="nav-icon">☼</span>Weather</a>
+        <a class="nav-link" href="#analytics"><span class="nav-icon">▥</span>Analytics</a>
+        <a class="nav-link" href="#history"><span class="nav-icon">◷</span>History</a>
+        <a class="nav-link" href="#settings"><span class="nav-icon">⚙</span>Settings</a>
+        <a class="nav-link" href="#working-principle"><span class="nav-icon">⟳</span>Working Principle</a>
+        <a class="nav-link" href="#flowchart"><span class="nav-icon">⇩</span>System Flowchart</a>
+        <a class="nav-link" href="#demo-guide"><span class="nav-icon">▷</span>Demo Guide</a>
+        <a class="nav-link" href="#about"><span class="nav-icon">ⓘ</span>About Project</a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="simulation-badge"><span class="pulse-dot"></span><span><strong>Simulation active</strong><small>Browser-based demo</small></span></div>
+        <div class="sidebar-foot">FieldSense <span>·</span> Project demo v1.0</div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>
+        <div class="breadcrumb">Workspace <span>/</span> <strong id="pageTitle">Dashboard</strong></div>
+        <div class="topbar-right">
+          <span class="sim-label"><span class="pulse-dot"></span> SIMULATION MODE</span>
+          <span class="top-date" id="currentDate"></span>
+          <div class="avatar" aria-label="Demo user">FS</div>
+        </div>
+      </header>
+
+      <div class="content-wrap">
+        <section class="page-section" id="dashboard">
+          <div class="page-heading">
+            <div><p class="eyebrow">FIELD OVERVIEW</p><h1>Good day, grower <span class="wave">✳</span></h1><p class="subheading">Here’s what’s happening in your simulated field right now.</p></div>
+            <div class="heading-actions"><span class="updated-label"><span class="live-dot"></span> Live simulation</span><button class="button button-outline" type="button" data-action="reset">↺ <span>Demo reset</span></button></div>
+          </div>
+
+          <div class="summary-strip">
+            <div class="field-identity"><span class="field-icon">♧</span><span><strong>North field</strong><small>Field ID · FS-001</small></span></div>
+            <span class="strip-divider"></span><span class="strip-detail"><span class="tiny-icon">⌖</span> Demo farm</span>
+            <span class="strip-detail strip-weather"><span id="stripWeatherIcon">☀</span> <span id="stripWeather">Clear conditions</span></span>
+            <span class="strip-detail"><span class="live-dot"></span> All systems operational</span>
+          </div>
+
+          <div class="demo-toolbar panel">
+            <div class="demo-toolbar-copy"><strong>Presentation shortcuts</strong><span>Try a scenario without adjusting settings first.</span></div>
+            <div class="demo-actions">
+              <button class="button button-outline" type="button" id="demoDrySoil">◉ &nbsp;Dry soil</button>
+              <button class="button button-outline" type="button" id="demoRain">☂ &nbsp;Simulate rain</button>
+              <button class="button button-outline" type="button" id="demoEmptyTank">⚠ &nbsp;Empty tank</button>
+            </div>
+          </div>
+
+          <div class="section-title-row"><div><h2>Field conditions</h2><p>Key sensor readings at a glance</p></div><span class="simulated-note">All readings are simulated</span></div>
+          <div class="metric-grid">
+            <article class="metric-card moisture-card" id="moistureCard"><div class="metric-top"><span class="metric-icon icon-green">◉</span><span class="metric-tag tag-green" id="moistureStatus">Moderate</span></div><div class="metric-name">Soil moisture</div><div class="metric-value"><span id="moistureValue">42</span><small>%</small></div><div class="metric-foot"><span>Live sensor simulation</span><span class="metric-trend" id="moistureTrend">● Stable</span></div><div class="mini-track"><span id="moistureMiniBar" style="width:42%"></span></div></article>
+            <article class="metric-card"><div class="metric-top"><span class="metric-icon icon-orange">♨</span><span class="metric-tag tag-neutral">Ambient</span></div><div class="metric-name">Temperature</div><div class="metric-value"><span id="temperatureValue">24</span><small>°C</small></div><div class="metric-foot"><span>Simulated air temperature</span><span class="metric-trend neutral-trend">☼ Field weather</span></div></article>
+            <article class="metric-card"><div class="metric-top"><span class="metric-icon icon-blue">≋</span><span class="metric-tag tag-blue">Air sensor</span></div><div class="metric-name">Air humidity</div><div class="metric-value"><span id="humidityValue">58</span><small>%</small></div><div class="metric-foot"><span>Simulated relative humidity</span><span class="metric-trend neutral-trend">◌ In the air</span></div></article>
+            <article class="metric-card"><div class="metric-top"><span class="metric-icon icon-blue">☂</span><span class="metric-tag tag-blue">Forecast</span></div><div class="metric-name">Rain probability</div><div class="metric-value"><span id="rainValue">15</span><small>%</small></div><div class="metric-foot"><span>Simulated chance of rain</span><span class="metric-trend neutral-trend" id="rainFoot">☀ Low chance</span></div></article>
+          </div>
+
+          <div class="lower-grid">
+            <article class="panel tank-panel">
+              <div class="panel-heading"><div><h3>Water resources</h3><p>Tank and daily usage</p></div><span class="panel-icon icon-green">♧</span></div>
+              <div class="tank-content"><div class="tank-visual"><div class="tank-shell"><div class="tank-fill" id="tankFill" style="height:72%"></div><span class="tank-percent" id="tankPercent">72%</span></div></div><div class="tank-data"><span class="small-label">TANK CAPACITY</span><strong><span id="tankLevel">72</span><small>%</small></strong><span class="tank-state" id="tankState"><span class="live-dot"></span> Available</span></div></div>
+              <div class="resource-stats"><div><span class="small-label">USED TODAY</span><strong><span id="waterUsed">0.0</span> <small>L</small></strong></div><div><span class="small-label">IRRIGATION CYCLES</span><strong id="cycleCount">0</strong></div></div>
+            </article>
+            <article class="panel pump-panel">
+              <div class="panel-heading"><div><h3>Virtual water pump</h3><p>System operation status</p></div><span class="pump-status status-off" id="pumpBadge"><span class="status-dot"></span> Pump off</span></div>
+              <div class="pump-illustration" id="pumpIllustration"><div class="pump-ring"><span>◉</span></div><div class="pump-copy"><strong id="pumpHeadline">Pump is idle</strong><span id="pumpDescription">Waiting for irrigation conditions</span></div><span class="pump-watermark">≈</span></div>
+              <div class="pump-details"><div><span>Operating mode</span><strong id="modeSummary">Automatic</strong></div><div><span>Next check</span><strong>Continuous</strong></div></div>
+              <a class="text-link" href="#control">Manage irrigation <span>→</span></a>
+            </article>
+          </div>
+        </section>
+
+        <section class="page-section" id="monitoring">
+          <div class="page-heading compact-heading"><div><p class="eyebrow">LIVE MONITORING</p><h1>Sensor readings</h1><p class="subheading">Adjust the simulated soil sensor and watch readings update instantly.</p></div><span class="simulated-note">◉ Simulated sensors</span></div>
+          <div class="panel sensor-panel"><div class="panel-heading"><div><h3>Soil moisture sensor</h3><p>Drag the slider to simulate a field sensor reading</p></div><span class="sensor-reading"><strong id="sensorMoisture">42</strong><small>%</small></span></div><input class="range-input moisture-range" type="range" min="0" max="100" value="42" id="moistureSlider" aria-label="Simulated soil moisture percentage"><div class="range-labels"><span>0% · Dry</span><span>50%</span><span>100% · Saturated</span></div><div class="sensor-scale"><span class="scale-dot dry-dot"></span><span>Dry</span><span class="scale-dot moderate-dot"></span><span>Moderate</span><span class="scale-dot moist-dot"></span><span>Moist</span></div></div>
+          <div class="metric-grid small-metric-grid">
+            <article class="metric-card"><div class="metric-top"><span class="metric-icon icon-orange">♨</span><span class="metric-tag tag-neutral">Simulated</span></div><div class="metric-name">Temperature</div><div class="metric-value"><span id="monitorTemp">24</span><small>°C</small></div><div class="metric-foot"><span>Ambient field reading</span></div></article>
+            <article class="metric-card"><div class="metric-top"><span class="metric-icon icon-blue">≋</span><span class="metric-tag tag-blue">Simulated</span></div><div class="metric-name">Air humidity</div><div class="metric-value"><span id="monitorHumidity">58</span><small>%</small></div><div class="metric-foot"><span>Relative air humidity</span></div></article>
+            <article class="metric-card"><div class="metric-top"><span class="metric-icon icon-blue">☂</span><span class="metric-tag tag-blue">Simulated</span></div><div class="metric-name">Rain probability</div><div class="metric-value"><span id="monitorRain">15</span><small>%</small></div><div class="metric-foot"><span>Weather simulation</span></div></article>
+          </div>
+        </section>
+
+        <section class="page-section" id="control">
+          <div class="page-heading compact-heading"><div><p class="eyebrow">IRRIGATION CONTROL</p><h1>System controls</h1><p class="subheading">Choose how water reaches your simulated field.</p></div><span class="simulated-note">Virtual pump · No hardware connected</span></div>
+          <div class="control-grid">
+            <article class="panel control-panel"><div class="panel-heading"><div><h3>Operating mode</h3><p>Automatic mode responds to moisture settings. Manual mode gives you direct control.</p></div><span class="panel-icon icon-green">⚙</span></div><div class="mode-switch" role="group" aria-label="Operating mode"><button type="button" id="autoMode" class="mode-option active" data-mode="auto">✳ &nbsp;Automatic</button><button type="button" id="manualMode" class="mode-option" data-mode="manual">☞ &nbsp;Manual</button></div><div class="mode-description" id="modeDescription">The pump starts when soil is too dry and stops when the target moisture is reached.</div><div class="control-divider"></div><div class="panel-heading pump-control-heading"><div><h3>Pump control</h3><p>Operate the virtual water pump</p></div><span class="pump-status status-off" id="controlPumpBadge"><span class="status-dot"></span> Off</span></div><div class="button-row"><button type="button" class="button button-primary" id="startPump">▶ &nbsp;Start pump</button><button type="button" class="button button-danger" id="stopPump">■ &nbsp;Stop pump</button></div><p class="control-hint" id="pumpControlHint">Switch to Manual Mode to control the pump directly.</p></article>
+            <article class="panel control-panel"><div class="panel-heading"><div><h3>Water tank level</h3><p>Adjust the available simulated water</p></div><span class="panel-icon icon-blue">♧</span></div><div class="tank-slider-heading"><span>Current level</span><strong><span id="controlTankValue">72</span>%</strong></div><input class="range-input tank-range" type="range" min="0" max="100" step="0.5" value="72" id="tankSlider" aria-label="Simulated water tank level"><div class="range-labels"><span>Empty</span><span>Full</span></div><div class="tank-warning" id="tankWarning" hidden>⚠ Tank is empty. The pump cannot run.</div><div class="tank-tips"><span class="live-dot"></span> Tank level decreases gradually while the pump runs.</div></article>
+          </div>
+          <div class="panel automation-panel"><div class="panel-heading"><div><h3>Automatic irrigation rules</h3><p>Set the moisture range that triggers and completes watering.</p></div><span class="metric-tag tag-green">AUTO RULES</span></div><div class="settings-grid"><label class="field-control"><span>Start irrigation below</span><span class="input-with-unit"><input type="number" id="startThreshold" min="1" max="98" value="30"><span>%</span></span><small>Pump starts when soil falls below this value</small></label><label class="field-control"><span>Stop irrigation at</span><span class="input-with-unit"><input type="number" id="targetMoisture" min="2" max="100" value="60"><span>%</span></span><small>Pump stops when soil reaches this value</small></label><label class="field-control"><span>Rain delay</span><span class="select-with-label"><input type="checkbox" id="rainDelayToggle" checked><span>Pause watering after simulated rain</span></span><small>Prevents unnecessary watering in wet weather</small></label><label class="field-control"><span>Delay duration</span><span class="input-with-unit"><input type="number" id="rainDelayMinutes" min="1" max="1440" value="10"><span>min</span></span><small>How long automatic watering is paused</small></label></div><button type="button" class="button button-primary save-settings" id="saveSettings">Save irrigation settings</button></div>
+        </section>
+
+        <section class="page-section" id="weather">
+          <div class="page-heading compact-heading"><div><p class="eyebrow">WEATHER SIMULATION</p><h1>Field weather</h1><p class="subheading">Simulated conditions for the North field.</p></div><div class="weather-actions"><button type="button" class="button button-outline" id="restoreWeather">☀ &nbsp;Restore normal weather</button><button type="button" class="button button-primary" id="simulateRain">☂ &nbsp;Simulate rain</button></div></div>
+          <div class="weather-banner" id="weatherBanner"><div class="weather-sun">☀</div><div class="weather-main"><span class="small-label">CURRENT CONDITIONS · SIMULATED</span><strong id="weatherCondition">Clear and sunny</strong><span id="weatherDescription">A bright day over the field with a low chance of rain.</span></div><div class="weather-temperature"><strong id="weatherTemp">24°</strong><span>Feels like <span id="feelsLike">25</span>°C</span></div></div>
+          <div class="weather-metrics"><article class="panel weather-metric"><span class="metric-icon icon-orange">♨</span><span class="small-label">TEMPERATURE</span><strong><span id="weatherTempCard">24</span> <small>°C</small></strong><span>Simulated air reading</span></article><article class="panel weather-metric"><span class="metric-icon icon-blue">≋</span><span class="small-label">AIR HUMIDITY</span><strong><span id="weatherHumidityCard">58</span> <small>%</small></strong><span>Simulated relative humidity</span></article><article class="panel weather-metric"><span class="metric-icon icon-blue">☂</span><span class="small-label">RAIN PROBABILITY</span><strong><span id="weatherRainCard">15</span> <small>%</small></strong><span id="weatherRainCaption">Low chance of rain</span></article></div>
+          <div class="panel rain-delay-panel"><span class="rain-delay-icon">☂</span><div><strong>Rain-delay status</strong><p id="rainDelayStatus">No rain delay is active.</p></div><span class="delay-indicator" id="delayIndicator"><span class="live-dot"></span> Monitoring</span></div>
+        </section>
+
+        <section class="page-section" id="analytics">
+          <div class="page-heading compact-heading"><div><p class="eyebrow">FIELD ANALYTICS</p><h1>Simulation analytics</h1><p class="subheading">Recent sensor and water-use trends from this browser session.</p></div><span class="simulated-note">History limited to the latest 60 readings</span></div>
+          <div class="chart-grid"><article class="panel chart-panel"><div class="panel-heading"><div><h3>Soil moisture</h3><p>Moisture level over time</p></div><span class="chart-unit">%</span></div><div class="chart-wrap"><canvas id="moistureChart" aria-label="Soil moisture history chart"></canvas></div></article><article class="panel chart-panel"><div class="panel-heading"><div><h3>Temperature</h3><p>Simulated ambient temperature</p></div><span class="chart-unit">°C</span></div><div class="chart-wrap"><canvas id="temperatureChart" aria-label="Temperature history chart"></canvas></div></article></div>
+          <article class="panel chart-panel water-chart-panel"><div class="panel-heading"><div><h3>Water consumption</h3><p>Simulated water used per time interval</p></div><span class="chart-unit">L</span></div><div class="chart-wrap chart-wrap-short"><canvas id="waterChart" aria-label="Water consumption chart"></canvas></div></article>
+        </section>
+
+        <section class="page-section" id="history">
+          <div class="page-heading compact-heading"><div><p class="eyebrow">ACTIVITY HISTORY</p><h1>Field activity</h1><p class="subheading">A record of events in your simulated irrigation system.</p></div><button type="button" class="button button-outline" id="clearHistory">Clear history</button></div>
+          <article class="panel history-panel"><div class="history-heading"><div><h3>Recent activity</h3><p>Events are saved in this browser</p></div><span class="history-count" id="historyCount">0 EVENTS</span></div><div id="activityList" class="activity-list"></div><div id="historyEmpty" class="empty-state" hidden><span>◷</span><strong>No activity yet</strong><p>System events and notifications will show up here.</p></div></article>
+        </section>
+
+        <section class="page-section" id="settings">
+          <div class="page-heading compact-heading"><div><p class="eyebrow">PREFERENCES</p><h1>Simulation settings</h1><p class="subheading">Your settings are saved in browser LocalStorage.</p></div><span class="simulated-note">Stored on this device</span></div>
+          <article class="panel preferences-panel"><div class="panel-heading"><div><h3>System preferences</h3><p>Manage automatic irrigation behavior</p></div><span class="panel-icon icon-green">⚙</span></div><p class="settings-explainer">Adjust the start and target moisture, rain delay, and delay duration under <a href="#control">Irrigation Control</a>. Settings are stored locally in this browser and do not connect to physical equipment.</p><div class="preferences-status"><span class="live-dot"></span><span><strong>Local storage</strong><small>Settings and activity are saved automatically in this browser.</small></span></div><button class="button button-outline" type="button" data-action="reset">↺ &nbsp;Reset simulation to defaults</button></article>
+        </section>
+
+        <section class="page-section" id="working-principle">
+          <div class="page-heading compact-heading"><div><p class="eyebrow">HOW THE SIMULATION WORKS</p><h1>Working principle</h1><p class="subheading">The complete irrigation process, explained step by step.</p></div><span class="simulated-note">Website simulation · No physical devices</span></div>
+          <article class="panel principle-panel">
+            <ol class="principle-steps">
+              <li><span class="principle-number">01</span><div><strong>Generate simulated readings</strong><p>The website starts with sample soil moisture and weather values. You can change soil moisture with the sensor slider or simulate rain with the weather control.</p></div></li>
+              <li><span class="principle-number">02</span><div><strong>Check the moisture threshold</strong><p>JavaScript checks the simulated soil value against the start threshold saved in Irrigation Control.</p></div></li>
+              <li><span class="principle-number">03</span><div><strong>Decide whether watering can start</strong><p>Automatic Mode requests irrigation only when soil is below the threshold, water is available, and an enabled rain delay is not active. Manual Mode follows the user’s pump buttons.</p></div></li>
+              <li><span class="principle-number">04</span><div><strong>Run the virtual pump</strong><p>Every two seconds, a running pump increases simulated soil moisture and water consumption while reducing the simulated tank level.</p></div></li>
+              <li><span class="principle-number">05</span><div><strong>Stop safely</strong><p>Automatic watering stops at the configured target. In either mode, the pump stops if the tank becomes empty. An active rain delay prevents automatic watering from starting.</p></div></li>
+              <li><span class="principle-number">06</span><div><strong>Update the dashboard</strong><p>Readings, Chart.js graphs, notifications, and the saved activity history reflect the latest simulation state. The process repeats on the next timer check.</p></div></li>
+            </ol>
+          </article>
+        </section>
+
+        <section class="page-section" id="flowchart">
+          <div class="page-heading compact-heading"><div><p class="eyebrow">IRRIGATION LOGIC</p><h1>System flowchart</h1><p class="subheading">A visual summary of the same checks used by the simulation.</p></div><span class="simulated-note">Repeats every 2 seconds</span></div>
+          <div class="panel flowchart-panel" role="img" aria-label="Flowchart: Start, read simulated sensor and weather values, check operating mode. In Manual Mode the user controls the virtual pump. In Automatic Mode check whether moisture is below the start threshold. If not, keep the pump off. If yes, check rain delay and tank level. If delayed or empty, keep the pump off. Otherwise run the pump, update moisture and water use, and stop at target moisture or when tank is empty. Update dashboard, charts, and activity, then repeat.">
+            <div class="flow-node flow-start">Start simulation</div>
+            <div class="flow-arrow" aria-hidden="true">↓</div>
+            <div class="flow-node">Read simulated soil and weather values</div>
+            <div class="flow-arrow" aria-hidden="true">↓</div>
+            <div class="flow-decision">Which operating mode is selected?</div>
+            <div class="flow-branches">
+              <div class="flow-branch">
+                <span class="flow-branch-label">MANUAL MODE</span>
+                <div class="flow-node">User starts or stops pump</div>
+                <div class="flow-arrow" aria-hidden="true">↓</div>
+                <div class="flow-node flow-safety">Empty tank? Stop pump for safety</div>
+              </div>
+              <div class="flow-branch">
+                <span class="flow-branch-label">AUTOMATIC MODE</span>
+                <div class="flow-node">Is soil below the start threshold?</div>
+                <div class="flow-arrow" aria-hidden="true">↓</div>
+                <div class="flow-node">Check rain delay and tank level</div>
+                <div class="flow-outcomes"><span class="flow-outcome">No · Keep pump off</span><span class="flow-outcome">Delayed or empty · Wait</span></div>
+                <div class="flow-arrow" aria-hidden="true">↓ If allowed</div>
+                <div class="flow-node flow-pump">Run virtual pump; raise moisture and water use</div>
+                <div class="flow-arrow" aria-hidden="true">↓</div>
+                <div class="flow-node">Target reached or tank empty?</div>
+                <div class="flow-outcomes"><span class="flow-outcome">Target · Stop pump</span><span class="flow-outcome">Tank empty · Stop safely</span></div>
+              </div>
+            </div>
+            <div class="flow-arrow" aria-hidden="true">↓</div>
+            <div class="flow-node flow-update">Update dashboard, charts, and activity history</div>
+            <div class="flow-arrow" aria-hidden="true">↻</div>
+            <div class="flow-node flow-repeat">Repeat at the next simulation check</div>
+          </div>
+        </section>
+
+        <section class="page-section" id="demo-guide">
+          <div class="page-heading compact-heading"><div><p class="eyebrow">PRESENTATION CHECKLIST</p><h1>Demo guide</h1><p class="subheading">A suggested sequence for demonstrating the project during evaluation.</p></div><button class="button button-outline" type="button" data-action="reset">↺ &nbsp;Reset simulation</button></div>
+          <div class="demo-guide-grid">
+            <article class="panel demo-guide-card"><span class="demo-step">01</span><div><h3>Normal soil moisture</h3><p>Start with the default Moderate reading. Open Live Monitoring and move the soil slider to show Dry, Moderate, and Moist status labels.</p><a href="#monitoring">Open Live Monitoring →</a></div></article>
+            <article class="panel demo-guide-card"><span class="demo-step">02</span><div><h3>Dry soil and automatic irrigation</h3><p>Click <strong>Dry soil</strong> on the Dashboard. This prepares dry soil, a full tank, and Automatic Mode; the pump should start below the configured threshold.</p><a href="#dashboard">Open Dashboard →</a></div></article>
+            <article class="panel demo-guide-card"><span class="demo-step">03</span><div><h3>Pump stopping at target</h3><p>Leave the simulation running. Moisture rises in small steps, then irrigation stops at the target set under Irrigation Control.</p><a href="#control">View irrigation rules →</a></div></article>
+            <article class="panel demo-guide-card"><span class="demo-step">04</span><div><h3>Manual pump control</h3><p>Choose Manual Mode, then use Start pump and Stop pump. The empty-tank safety stop still applies in Manual Mode.</p><a href="#control">Open pump controls →</a></div></article>
+            <article class="panel demo-guide-card"><span class="demo-step">05</span><div><h3>Simulated rainfall and rain delay</h3><p>Click Simulate rain on the Dashboard or Weather page. Show the simulated weather readings and rain-delay status. Restore normal weather to clear the delay.</p><a href="#weather">Open Weather →</a></div></article>
+            <article class="panel demo-guide-card"><span class="demo-step">06</span><div><h3>Empty tank protection</h3><p>Click <strong>Empty tank</strong> on the Dashboard. Dry soil with no available water demonstrates why automatic irrigation cannot start.</p><a href="#dashboard">Open Dashboard →</a></div></article>
+            <article class="panel demo-guide-card"><span class="demo-step">07</span><div><h3>Analytics and activity</h3><p>Open Analytics to show changing charts, then History to review pump, weather, and safety events recorded during the demo.</p><a href="#analytics">Open Analytics →</a> <a href="#history">Open History →</a></div></article>
+            <article class="panel demo-reset-card"><span class="demo-reset-icon">↺</span><div><h3>Ready to present again?</h3><p>Reset restores the sample readings, default irrigation settings, and an empty activity log.</p><button class="button button-primary" type="button" data-action="reset">Reset simulation</button></div></article>
+          </div>
+        </section>
+
+        <section class="page-section" id="about">
+          <div class="page-heading compact-heading"><div><p class="eyebrow">PROJECT OVERVIEW</p><h1>About Project</h1><p class="subheading">Project information for college demonstration and evaluation.</p></div><span class="project-chip">DIPLOMA PROJECT DEMO</span></div>
+          <article class="about-intro"><div class="about-emblem">✳</div><div><span class="small-label">PROJECT TITLE</span><h2>Smart Irrigation System Website Simulation</h2><p>This is a website-based simulation of an IoT smart irrigation system. All sensor readings, weather conditions, tank values, and pump actions are simulated in the browser. <strong>No physical sensors, pumps, IoT hardware, or real-time weather API are connected.</strong></p></div></article>
+          <article class="panel abstract-panel"><span class="info-icon">▤</span><div><h3>Abstract</h3><p>The project demonstrates how a smart irrigation system can use soil moisture and weather information to decide when watering is needed. An interactive website simulates sensor readings, automatic and manual pump modes, tank safety, and rain delay. Users can observe changing readings through dashboard cards, charts, and an activity log. The simulation is designed as a clear learning and presentation aid; it does not control real irrigation equipment or report actual field measurements.</p></div></article>
+          <div class="about-grid">
+            <article class="panel info-panel"><span class="info-icon">❝</span><h3>Problem statement</h3><p>Manual irrigation can waste water when crops receive more than they need, while infrequent checks can leave soil too dry. This project presents a simple way to learn how moisture-based decisions can help manage irrigation.</p></article>
+            <article class="panel info-panel"><span class="info-icon">◎</span><h3>Objectives</h3><ul><li>Demonstrate moisture-based irrigation rules.</li><li>Show simulated sensor and weather readings.</li><li>Track water use, pump cycles, and activity.</li><li>Provide an interactive learning dashboard.</li></ul></article>
+            <article class="panel info-panel"><span class="info-icon">↗</span><h3>Proposed solution</h3><p>A responsive browser dashboard simulates soil and weather sensors, a water tank, and a virtual pump. Users can adjust readings, choose automatic or manual mode, and observe resulting events and trends.</p></article>
+            <article class="panel info-panel"><span class="info-icon">▦</span><h3>Main features</h3><ul><li>Live simulated readings and interactive sliders.</li><li>Automatic rules and manual pump controls.</li><li>Rain simulation, delay, and tank safety.</li><li>Charts, notifications, and saved activity.</li></ul></article>
+            <article class="panel info-panel"><span class="info-icon">⌘</span><h3>Technology stack</h3><div class="tech-tags"><span>HTML5</span><span>CSS3</span><span>Vanilla JavaScript</span><span>Chart.js</span><span>Browser LocalStorage</span></div><p>Chart.js is loaded from its CDN. No framework, server, or database is used.</p></article>
+            <article class="panel info-panel"><span class="info-icon">✧</span><h3>Advantages</h3><ul><li>Simple to run and explain in a presentation.</li><li>Demonstrates automatic and manual control.</li><li>Shows simulated water trends and event history.</li><li>Responsive and does not need special equipment.</li></ul></article>
+            <article class="panel info-panel"><span class="info-icon">△</span><h3>Limitations</h3><ul><li>Values are simulated, not measured in a real field.</li><li>No physical pump, sensors, or IoT hardware.</li><li>No real-time weather API or field testing.</li><li>Saved data stays in this browser on this device.</li></ul></article>
+            <article class="panel info-panel"><span class="info-icon">➜</span><h3>Future scope</h3><p>A future hardware project could connect calibrated soil sensors, a microcontroller, a safely controlled real pump, and a weather data service. Multi-field management and secure remote reporting could also be explored.</p></article>
+          </div>
+        </section>
+
+        <footer class="page-footer"><span>✳ &nbsp;FieldSense <span class="footer-muted">· Smart Irrigation Simulation</span></span><span>For learning purposes only · No physical devices connected</span></footer>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+</body>
+</html>
